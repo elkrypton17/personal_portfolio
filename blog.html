@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simon-Peter Badipetah – Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #6A0DAD;
+      --blue: #1E90FF;
+      --white: #FFFFFF;
+      --bg: #0e0e0e;
+      --card-bg: rgba(255,255,255,0.05);
+      --btn-glow: 0 0 10px var(--blue), 0 0 20px var(--purple);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--white);
+      line-height: 1.6;
+    }
+    a { text-decoration:none; color: inherit; }
+    .container { max-width: 1100px; margin: auto; padding: 2rem; }
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+    h1 { font-size: 3rem; margin-bottom: 1rem; }
+    h2 { font-size: 2rem; margin-bottom: 1rem; }
+    h3 { font-size: 1.75rem; margin-bottom: 1rem; }
+    h4 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .blog-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .blog-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--btn-glow);
+    }
+    .meta { font-size: 0.85rem; color: rgba(255,255,255,0.65); margin-bottom: 0.75rem; }
+    .btn { display: inline-block; padding: 0.6rem 1.2rem; margin-top:0.5rem; border-radius: 6px; background: var(--purple); color: var(--white); font-weight: 600; transition: all 0.3s ease; cursor:pointer; }
+    .btn:hover { box-shadow: var(--btn-glow); transform: scale(1.05); }
+    header { padding: 2rem 0; text-align: center; }
+    nav a { color: var(--white); margin: 0 1rem; font-weight: 500; }
+    .back-link { margin-bottom: 2rem; display:inline-block; color: var(--blue); font-weight:500; }
+    /* Reveal Animations */
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* Modal Styles */
+    #modal {
+      display: none;
+      position: fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #modal-content-wrapper {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 700px;
+      max-height: 80%;
+      overflow-y: auto;
+      position: relative;
+    }
+    #modal h2 { margin-bottom: 1rem; }
+    #modal p { line-height: 1.5; }
+    #modal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: var(--purple);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Simon-Peter Badipetah – Blog</h1>
+  <nav>
+    <a href="index.html">Portfolio</a>
+    <a href="#blog">Blog</a>
+  </nav>
+</header>
+
+<div class="container">
+  <a href="index.html" class="back-link">← Back to Portfolio</a>
+
+  <section id="blog">
+    <!-- Blog Articles -->
+    <article class="blog-card reveal">
+      <h2>Balancing Code and Leadership</h2>
+      <div class="meta">Category: Student Leadership • Aug 2025</div>
+      <p>Every bug I fixed taught me discipline; every meeting taught me empathy. Technology and leadership both require patience, integrity, and purpose.</p>
+      <button class="btn" onclick="openModal('balancing')">Read Full Article</button>
+    </article>
+
+    <article class="blog-card reveal">
+      <h2>Why Integrity Still Matters in Student Politics</h2>
+      <div class="meta">Category: Leadership Insights • Jul 2025</div>
+      <p>Integrity is the compass that keeps leadership grounded amidst competing interests. True leaders act with honesty and transparency every step of the way.</p>
+      <button class="btn" onclick="openModal('integrity')">Read Full Article</button>
+    </article>
+
+    <article class="blog-card reveal">
+      <h2>The Role of Digital Media in Building Student Communities</h2>
+      <div class="meta">Category: Technology & Community • Jun 2025</div>
+      <p>Digital platforms amplify voices and impact. When used responsibly, social media can foster engagement, collaboration, and positive change among students.</p>
+      <button class="btn" onclick="openModal('digital')">Read Full Article</button>
+    </article>
+
+    <article class="blog-card reveal">
+      <h2>How Leadership Begins with Listening</h2>
+      <div class="meta">Category: Leadership Philosophy • May 2025</div>
+      <p>Active listening uncovers challenges, inspires trust, and informs better decisions. Leadership isn’t about being heard first — it’s about understanding deeply.</p>
+      <button class="btn" onclick="openModal('listening')">Read Full Article</button>
+    </article>
+  </section>
+</div>
+
+<!-- Modal -->
+<div id="modal">
+  <div id="modal-content-wrapper">
+    <button class="close-btn" onclick="closeModal()">Close</button>
+    <h2 id="modal-title"></h2>
+    <p id="modal-content"></p>
+  </div>
+</div>
+
+<script>
+  // Scroll reveal animation
+  const revealElements = document.querySelectorAll('.reveal');
+  window.addEventListener('scroll', () => {
+    const windowHeight = window.innerHeight;
+    revealElements.forEach(el => {
+      const elementTop = el.getBoundingClientRect().top;
+      if(elementTop < windowHeight - 100){
+        el.classList.add('active');
+      }
+    });
+  });
+
+  // Modal content
+  const articles = {
+    balancing: {
+      title: "Balancing Code and Leadership",
+      content: "Every bug I fixed taught me discipline; every meeting taught me empathy. Technology and leadership both require patience, integrity, and purpose. Balancing coding responsibilities with leadership roles has taught me how to manage time, mentor others, and make impactful decisions."
+    },
+    integrity: {
+      title: "Why Integrity Still Matters in Student Politics",
+      content: "Integrity is the compass that keeps leadership grounded amidst competing interests. True leaders act with honesty and transparency every step of the way. Upholding values even under pressure ensures trust and long-term success in student governance."
+    },
+    digital: {
+      title: "The Role of Digital Media in Building Student Communities",
+      content: "Digital platforms amplify voices and impact. When used responsibly, social media can foster engagement, collaboration, and positive change among students. Leveraging technology wisely can create stronger student networks and support meaningful initiatives."
+    },
+    listening: {
+      title: "How Leadership Begins with Listening",
+      content: "Active listening uncovers challenges, inspires trust, and informs better decisions. Leadership isn’t about being heard first — it’s about understanding deeply. By paying attention and responding thoughtfully, leaders can motivate teams and drive progress effectively."
+    }
+  };
+
+  function openModal(key){
+    document.getElementById('modal-title').innerText = articles[key].title;
+    document.getElementById('modal-content').innerText = articles[key].content;
+    document.getElementById('modal').style.display = 'flex';
+  }
+
+  function closeModal(){
+    document.getElementById('modal').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>
